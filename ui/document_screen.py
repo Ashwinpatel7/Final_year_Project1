@@ -67,7 +67,7 @@ class DocumentScreen(BaseScreen):
         file_frame.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         file_label = tk.Label(file_frame, text="DOCUMENT", font=self.small_font,
-                            bg=self.bg_color, fg=ThemeColors.TEXT_SECONDARY)
+                            bg=self.bg_color, fg=ThemeColors.MEDIUM_GRAY)
         file_label.pack(anchor=tk.W, pady=(0, 5))
 
         file_select_frame = tk.Frame(file_frame, bg=self.bg_color)
@@ -95,7 +95,7 @@ class DocumentScreen(BaseScreen):
 
         # Target language
         to_label = tk.Label(lang_frame, text="TARGET LANGUAGE", font=self.small_font,
-                          bg=self.bg_color, fg=ThemeColors.TEXT_SECONDARY)
+                          bg=self.bg_color, fg=ThemeColors.MEDIUM_GRAY)
         to_label.pack(anchor=tk.W, pady=(0, 5))
 
         self.to_lang = ttk.Combobox(lang_frame, values=LANGUAGES,
@@ -111,7 +111,7 @@ class DocumentScreen(BaseScreen):
 
         # Document content area
         self.doc_frame = tk.Frame(self.text_frame, bg=self.surface_color, bd=1, relief=tk.SOLID,
-                                highlightbackground=ThemeColors.CARD_BORDER, highlightthickness=1)
+                                highlightbackground=ThemeColors.LIGHT_GRAY, highlightthickness=1)
         self.doc_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
 
         self.doc_text = tk.Text(self.doc_frame, height=15, font=self.body_font,
@@ -127,7 +127,7 @@ class DocumentScreen(BaseScreen):
         # Document text label
         self.doc_label = tk.Label(self.doc_frame, text="Document Content",
                                 font=self.small_font, bg=self.surface_color,
-                                fg=ThemeColors.TEXT_SECONDARY)
+                                fg=ThemeColors.MEDIUM_GRAY)
         self.doc_label.place(x=15, y=10)
 
         # Add a direct Load Document button
@@ -151,7 +151,7 @@ class DocumentScreen(BaseScreen):
 
         # Translation area
         self.trans_frame = tk.Frame(self.text_frame, bg=self.surface_color, bd=1, relief=tk.SOLID,
-                                  highlightbackground=ThemeColors.CARD_BORDER, highlightthickness=1)
+                                  highlightbackground=ThemeColors.LIGHT_GRAY, highlightthickness=1)
         self.trans_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(10, 0))
 
         self.trans_text = tk.Text(self.trans_frame, height=15, font=self.body_font,
@@ -186,7 +186,7 @@ class DocumentScreen(BaseScreen):
         # Translation text label
         self.trans_label = tk.Label(self.trans_frame, text="Translation",
                                   font=self.small_font, bg=self.surface_color,
-                                  fg=ThemeColors.TEXT_SECONDARY)
+                                  fg=ThemeColors.MEDIUM_GRAY)
         self.trans_label.place(x=15, y=10)
 
     def create_button_panel(self):
@@ -198,7 +198,7 @@ class DocumentScreen(BaseScreen):
         buttons = [
             ("Load Document", self.load_document, self.primary_color),
             ("Translate", self.translate_document, self.primary_color),
-            ("Clear", self.clear, ThemeColors.TEXT_DISABLED),
+            ("Clear", self.clear, ThemeColors.MEDIUM_GRAY),
             ("Copy Translation", self.copy_translation, self.success_color),
             ("Save Translation", self.save_translation, self.info_color)
         ]
@@ -208,7 +208,7 @@ class DocumentScreen(BaseScreen):
             # Create the button directly
             btn = tk.Button(self.btn_frame, text=text, font=self.button_font,
                           command=command, bg=color,
-                          fg=ThemeColors.ON_PRIMARY if color != ThemeColors.TEXT_DISABLED else ThemeColors.ON_BACKGROUND,
+                          fg=ThemeColors.ON_PRIMARY if color != ThemeColors.MEDIUM_GRAY else ThemeColors.ON_BACKGROUND,
                           bd=0, padx=15, pady=8, cursor='hand2', relief=tk.RAISED)
 
             # Add hover effect
@@ -222,7 +222,7 @@ class DocumentScreen(BaseScreen):
 
         # File info
         self.file_info = tk.Label(self.btn_frame, text="No file selected", font=self.small_font,
-                                bg=self.bg_color, fg=ThemeColors.TEXT_SECONDARY)
+                                bg=self.bg_color, fg=ThemeColors.MEDIUM_GRAY)
         self.file_info.pack(side=tk.RIGHT)
 
     def update_combobox_style(self):

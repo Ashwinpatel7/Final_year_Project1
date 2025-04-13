@@ -13,11 +13,13 @@ import pyperclip as pc
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 import speech_recognition as sr
-import pytesseract
 from PIL import Image
-import docx
-import pdf2image
 from config import LANGUAGE_CODES
+
+# Optional imports - these will be imported dynamically when needed
+# import pytesseract  # For OCR
+# import docx  # For DOCX file reading
+# import pdf2image  # For PDF to image conversion
 
 # Translation utilities
 def translate_text(text, source_lang, target_lang):
@@ -89,26 +91,56 @@ def speech_to_text(recognizer, microphone, timeout=5):
 def extract_text_from_docx(file_path):
     """Extract text from a DOCX file."""
     try:
-        doc = docx.Document(file_path)
-        full_text = []
-        for para in doc.paragraphs:
-            full_text.append(para.text)
-        return "\n".join(full_text)
+        try:
+            # Try to import docx library
+            import docx
+            doc = docx.Document(file_path)
+            full_text = []
+            for para in doc.paragraphs:
+                full_text.append(para.text)
+            return "\n".join(full_text)
+        except ImportError:
+            # docx library not installed
+            return """DOCX text extraction requires the python-docx package.
+
+To extract text from DOCX files, please install:
+
+pip install python-docx
+
+Then restart the application.
+
+Alternatively, you can manually type the text from the document in the text box above."""
     except Exception as e:
         raise Exception(f"Error extracting text from DOCX: {str(e)}")
 
 def extract_text_from_pdf(file_path):
     """Extract text from a PDF file using OCR."""
     try:
-        # Convert PDF to images
-        images = pdf2image.convert_from_path(file_path)
-        text = ""
+        try:
+            # Try to import required libraries
+            import pdf2image
+            import pytesseract
 
-        # Extract text from each image
-        for img in images:
-            text += pytesseract.image_to_string(img) + "\n\n"
+            # Convert PDF to images
+            images = pdf2image.convert_from_path(file_path)
+            text = ""
 
-        return text
+            # Extract text from each image
+            for img in images:
+                text += pytesseract.image_to_string(img) + "\n\n"
+
+            return text
+        except (ImportError, Exception) as dep_error:
+            # Dependencies not installed
+            return """PDF text extraction requires additional software:
+
+1. Install Tesseract OCR: https://github.com/UB-Mannheim/tesseract/wiki
+2. Install Poppler: https://github.com/oschwartz10612/poppler-windows/releases
+3. Add both to your PATH environment variable
+4. Install Python packages: pip install pytesseract pdf2image
+5. Restart the application
+
+Alternatively, you can manually type the text from the PDF in the text box above."""
     except Exception as e:
         raise Exception(f"Error extracting text from PDF: {str(e)}")
 
@@ -116,8 +148,23 @@ def extract_text_from_image(file_path):
     """Extract text from an image using OCR."""
     try:
         img = Image.open(file_path)
-        text = pytesseract.image_to_string(img)
-        return text
+        try:
+            # Try to use Tesseract OCR if available
+            import pytesseract
+            text = pytesseract.image_to_string(img)
+            return text
+        except (ImportError, Exception) as ocr_error:
+            # Tesseract not installed or other OCR error
+            # Return a helpful message with installation instructions
+            return """Tesseract OCR is not installed or configured properly.
+
+To extract text from images, please install Tesseract OCR:
+
+1. Download and install Tesseract from: https://github.com/UB-Mannheim/tesseract/wiki
+2. Add Tesseract to your PATH environment variable
+3. Restart the application
+
+Alternatively, you can manually type the text from the image in the text box above."""
     except Exception as e:
         raise Exception(f"Error extracting text from image: {str(e)}")
 

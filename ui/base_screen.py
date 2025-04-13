@@ -6,7 +6,7 @@ Provides common functionality for all screens.
 import tkinter as tk
 from tkinter import font as tkfont
 import time
-from config import ThemeColors, Fonts
+from config.theme import ThemeColors, ThemeFonts
 
 class BaseScreen(tk.Frame):
     """Base class for all screens in the application."""
@@ -25,14 +25,17 @@ class BaseScreen(tk.Frame):
 
     def setup_fonts(self):
         """Set up fonts for the screen."""
-        self.title_font = tkfont.Font(family=Fonts.PRIMARY_FAMILY, size=Fonts.TITLE_SIZE, weight=Fonts.TITLE_WEIGHT)
-        self.heading_font = tkfont.Font(family=Fonts.PRIMARY_FAMILY, size=Fonts.HEADING_SIZE, weight=Fonts.HEADING_WEIGHT)
-        self.subheading_font = tkfont.Font(family=Fonts.PRIMARY_FAMILY, size=Fonts.SUBHEADING_SIZE, weight=Fonts.HEADING_WEIGHT)
-        self.body_font = tkfont.Font(family=Fonts.SECONDARY_FAMILY, size=Fonts.BODY_SIZE)
-        self.small_font = tkfont.Font(family=Fonts.SECONDARY_FAMILY, size=Fonts.SMALL_SIZE)
-        self.tiny_font = tkfont.Font(family=Fonts.SECONDARY_FAMILY, size=Fonts.TINY_SIZE)
-        self.button_font = tkfont.Font(family=Fonts.ACCENT_FAMILY, size=Fonts.BUTTON_SIZE, weight=Fonts.BUTTON_WEIGHT)
-        self.monospace_font = tkfont.Font(family=Fonts.MONOSPACE_FAMILY, size=Fonts.BODY_SIZE)
+        # Use ThemeFonts from our new theme system
+        font_family = ThemeFonts.FONT_FAMILY[0]  # First font in the family list
+
+        self.title_font = tkfont.Font(family=font_family, size=ThemeFonts.TITLE, weight="bold")
+        self.heading_font = tkfont.Font(family=font_family, size=ThemeFonts.HEADING, weight="bold")
+        self.subheading_font = tkfont.Font(family=font_family, size=ThemeFonts.SUBHEADING, weight="bold")
+        self.body_font = tkfont.Font(family=font_family, size=ThemeFonts.BODY)
+        self.small_font = tkfont.Font(family=font_family, size=ThemeFonts.SMALL)
+        self.tiny_font = tkfont.Font(family=font_family, size=ThemeFonts.TINY)
+        self.button_font = tkfont.Font(family=font_family, size=ThemeFonts.BODY, weight="bold")
+        self.monospace_font = tkfont.Font(family="Courier New", size=ThemeFonts.BODY)
 
     def update_colors(self):
         """Update colors based on the current theme."""
@@ -87,13 +90,13 @@ class BaseScreen(tk.Frame):
 
         # Logo/icon (placeholder for now)
         logo_text = "FF"
-        logo_frame = tk.Frame(title_frame, bg=ThemeColors.ACCENT if not self.dark_mode else ThemeColors.DARK_ACCENT,
+        logo_frame = tk.Frame(title_frame, bg=ThemeColors.PRIMARY if not self.dark_mode else ThemeColors.PRIMARY_VARIANT,
                            width=40, height=40, highlightthickness=0)
         logo_frame.pack(side=tk.LEFT, padx=(0, 15))
         logo_frame.pack_propagate(False)
 
-        logo_label = tk.Label(logo_frame, text=logo_text, font=tkfont.Font(family=Fonts.PRIMARY_FAMILY, size=16, weight='bold'),
-                            bg=ThemeColors.ACCENT if not self.dark_mode else ThemeColors.DARK_ACCENT, fg='white')
+        logo_label = tk.Label(logo_frame, text=logo_text, font=tkfont.Font(family=ThemeFonts.FONT_FAMILY[0], size=16, weight='bold'),
+                            bg=ThemeColors.PRIMARY if not self.dark_mode else ThemeColors.PRIMARY_VARIANT, fg=ThemeColors.ON_PRIMARY)
         logo_label.place(relx=0.5, rely=0.5, anchor='center')
 
         # Title and subtitle
@@ -125,17 +128,17 @@ class BaseScreen(tk.Frame):
         """Create a footer with status text."""
         # Footer frame
         self.footer = tk.Frame(self, bg=self.surface_color, height=40,
-                              highlightbackground=ThemeColors.CARD_BORDER, highlightthickness=1)
+                              highlightbackground=ThemeColors.LIGHT_GRAY, highlightthickness=1)
         self.footer.pack(fill=tk.X, side=tk.BOTTOM)
 
         # Status bar
         self.status = tk.Label(self.footer, text=status_text, font=self.small_font,
-                             bg=self.surface_color, fg=ThemeColors.TEXT_SECONDARY)
+                             bg=self.surface_color, fg=ThemeColors.MEDIUM_GRAY)
         self.status.pack(side=tk.LEFT, padx=25, pady=10)
 
         # Version info
         version = tk.Label(self.footer, text="Final Fusion Translator v2.0", font=self.small_font,
-                         bg=self.surface_color, fg=ThemeColors.TEXT_SECONDARY)
+                         bg=self.surface_color, fg=ThemeColors.MEDIUM_GRAY)
         version.pack(side=tk.RIGHT, padx=25, pady=10)
 
     def update_status(self, message, error=False):
@@ -143,7 +146,7 @@ class BaseScreen(tk.Frame):
         if hasattr(self, 'status'):
             # Schedule the UI update on the main thread
             def update():
-                self.status.config(text=message, fg=self.error_color if error else ThemeColors.TEXT_SECONDARY)
+                self.status.config(text=message, fg=self.error_color if error else ThemeColors.MEDIUM_GRAY)
             self.after(0, update)
 
             if not error:
@@ -153,7 +156,7 @@ class BaseScreen(tk.Frame):
                     time.sleep(5)
                     if hasattr(self, 'status') and self.status['text'] == message:
                         def clear():
-                            self.status.config(text="Ready", fg=ThemeColors.TEXT_SECONDARY)
+                            self.status.config(text="Ready", fg=ThemeColors.MEDIUM_GRAY)
                         self.after(0, clear)
 
                 threading = __import__('threading')

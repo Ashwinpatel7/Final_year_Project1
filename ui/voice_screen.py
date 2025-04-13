@@ -109,18 +109,30 @@ class VoiceScreen(BaseScreen):
         status_frame.pack(fill=tk.X, pady=(0, 15), ipady=20)
 
         # Voice status label
-        self.voice_status = tk.Label(status_frame, text="Click 'Start Listening' to begin",
-                                   font=self.heading_font, bg=self.surface_color,
-                                   fg=self.fg_color)
+        self.voice_status = tk.Label(
+            status_frame,
+            text="Click 'Start Listening' to begin",
+            font=self.heading_font,
+            bg=self.surface_color,
+            fg=self.fg_color
+        )
         self.voice_status.pack(pady=20)
 
-        # Microphone animation canvas
-        self.mic_canvas = tk.Canvas(status_frame, width=100, height=100,
-                                  bg=self.surface_color, highlightthickness=0)
-        self.mic_canvas.pack()
+        # Microphone canvas
+        self.mic_canvas = tk.Canvas(
+            status_frame,
+            width=120,
+            height=120,
+            bg=self.surface_color,
+            highlightthickness=0
+        )
+        self.mic_canvas.pack(pady=10)
 
         # Draw microphone icon
         self.draw_microphone(active=False)
+
+        # Make the microphone clickable
+        self.mic_canvas.bind("<Button-1>", lambda e: self.toggle_listening())
 
         # Recognized text frame
         recognized_frame = tk.Frame(voice_frame, bg=self.surface_color, bd=1, relief=tk.SOLID,
@@ -152,16 +164,16 @@ class VoiceScreen(BaseScreen):
         self.listen_btn = tk.Button(
             listen_btn_container,
             text="🎤 START LISTENING",
-            font=("Arial", 14, "bold"),
+            font=("Arial", 16, "bold"),
             command=self.toggle_listening,
             bg="#FF5722",  # Bright orange
             fg="white",
-            padx=20,
-            pady=10,
+            padx=30,
+            pady=15,
             relief=tk.RAISED,
-            bd=2
+            bd=3
         )
-        self.listen_btn.pack(pady=10, ipadx=10, ipady=5)
+        self.listen_btn.pack(pady=15, ipadx=20, ipady=10, fill=tk.X, padx=50)
 
         # Add a dedicated translate button - DIRECT APPROACH
         translate_btn_container = tk.Frame(self.main_frame, bg=self.bg_color)
@@ -171,16 +183,16 @@ class VoiceScreen(BaseScreen):
         self.translate_btn = tk.Button(
             translate_btn_container,
             text="🔄 TRANSLATE SPEECH",
-            font=("Arial", 14, "bold"),
+            font=("Arial", 16, "bold"),
             command=self.translate_speech,
             bg="#4CAF50",  # Bright green
             fg="white",
-            padx=20,
-            pady=10,
+            padx=30,
+            pady=15,
             relief=tk.RAISED,
-            bd=2
+            bd=3
         )
-        self.translate_btn.pack(pady=10, ipadx=10, ipady=5)
+        self.translate_btn.pack(pady=15, ipadx=20, ipady=10, fill=tk.X, padx=50)
 
     def create_translation_panel(self):
         """Create the translation panel."""
@@ -236,8 +248,12 @@ class VoiceScreen(BaseScreen):
             self.buttons[text] = btn
             btn.pack(side=tk.LEFT, padx=5)
 
-        # Store reference to the listen button for toggling
-        self.listen_btn = self.buttons["Start Listening"]
+        # We're using the direct buttons instead of these panel buttons
+        # so we'll hide these to avoid confusion
+        if "Start Listening" in self.buttons:
+            self.buttons["Start Listening"].pack_forget()
+        if "Translate" in self.buttons:
+            self.buttons["Translate"].pack_forget()
 
     def update_combobox_style(self):
         """Update the combobox style based on the current theme."""
@@ -480,14 +496,14 @@ class VoiceScreen(BaseScreen):
                     self.after(0, lambda: self.trans_text.insert(tk.END, translated))
                     self.after(0, lambda: self.update_status(f"Speech translated to {dest_lang}"))
 
-                    # Reset the button text
+                    # Reset the button loading state
                     if hasattr(self, 'translate_btn'):
                         self.after(0, lambda: self.translate_btn.config(text=original_text))
                 except Exception as e:
                     self.after(0, lambda: self.update_status(f"Translation error: {str(e)}", error=True))
                     self.after(0, lambda: show_message("Error", str(e), "error"))
 
-                    # Reset the button text on error
+                    # Reset the button loading state on error
                     if hasattr(self, 'translate_btn'):
                         self.after(0, lambda: self.translate_btn.config(text=original_text))
 

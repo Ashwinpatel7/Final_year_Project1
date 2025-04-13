@@ -60,7 +60,7 @@ class TranslatorScreen(BaseScreen):
 
         # From language
         from_label = tk.Label(self.lang_frame, text="SOURCE LANGUAGE", font=self.small_font,
-                            bg=self.bg_color, fg=ThemeColors.TEXT_SECONDARY)
+                            bg=self.bg_color, fg=ThemeColors.MEDIUM_GRAY)
         from_label.grid(row=0, column=0, sticky=tk.W, padx=(0, 10))
 
         # Create style for combobox
@@ -82,7 +82,7 @@ class TranslatorScreen(BaseScreen):
 
         # To language
         to_label = tk.Label(self.lang_frame, text="TARGET LANGUAGE", font=self.small_font,
-                          bg=self.bg_color, fg=ThemeColors.TEXT_SECONDARY)
+                          bg=self.bg_color, fg=ThemeColors.MEDIUM_GRAY)
         to_label.grid(row=0, column=2, sticky=tk.W)
 
         self.to_lang = ttk.Combobox(self.lang_frame, values=LANGUAGES,
@@ -106,7 +106,7 @@ class TranslatorScreen(BaseScreen):
         input_outer_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
 
         self.input_frame = tk.Frame(input_outer_frame, bg=self.surface_color, bd=0, relief=tk.FLAT,
-                                  highlightbackground=ThemeColors.CARD_BORDER, highlightthickness=1)
+                                  highlightbackground=ThemeColors.LIGHT_GRAY, highlightthickness=1)
         self.input_frame.pack(fill=tk.BOTH, expand=True)
 
         # Input text header
@@ -137,7 +137,7 @@ class TranslatorScreen(BaseScreen):
         output_outer_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(10, 0))
 
         self.output_frame = tk.Frame(output_outer_frame, bg=self.surface_color, bd=0, relief=tk.FLAT,
-                                   highlightbackground=ThemeColors.CARD_BORDER, highlightthickness=1)
+                                   highlightbackground=ThemeColors.LIGHT_GRAY, highlightthickness=1)
         self.output_frame.pack(fill=tk.BOTH, expand=True)
 
         # Output text header
@@ -192,7 +192,7 @@ class TranslatorScreen(BaseScreen):
         # Buttons with their respective colors and icons
         buttons = [
             ("Translate", self.translate, self.primary_color, "🔄"),
-            ("Clear", self.clear, ThemeColors.TEXT_DISABLED, "🗑️"),
+            ("Clear", self.clear, ThemeColors.MEDIUM_GRAY, "🗑️"),
             ("Copy", self.copy, self.success_color, "📋"),
             ("Read Aloud", self.text_to_speech, self.warning_color, "🔊"),
             ("Voice Input", self.speech_to_text, self.info_color, "🎤")
@@ -206,7 +206,7 @@ class TranslatorScreen(BaseScreen):
             # Create the button directly
             btn = tk.Button(self.btn_frame, text=btn_text, font=self.button_font,
                           command=command, bg=color,
-                          fg=ThemeColors.ON_PRIMARY if color != ThemeColors.TEXT_DISABLED else ThemeColors.ON_BACKGROUND,
+                          fg=ThemeColors.ON_PRIMARY if color != ThemeColors.MEDIUM_GRAY else ThemeColors.ON_BACKGROUND,
                           bd=0, padx=15, pady=8, cursor='hand2', relief=tk.RAISED)
 
             # Add hover effect
@@ -220,7 +220,7 @@ class TranslatorScreen(BaseScreen):
 
         # Character count
         self.char_count = tk.Label(self.btn_frame, text="0 characters", font=self.small_font,
-                                  bg=self.bg_color, fg=ThemeColors.TEXT_SECONDARY)
+                                  bg=self.bg_color, fg=ThemeColors.MEDIUM_GRAY)
         self.char_count.pack(side=tk.RIGHT)
 
     def update_combobox_style(self):
