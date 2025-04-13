@@ -46,7 +46,7 @@ LANGUAGES = list(LANGUAGE_CODES.keys())
 class PolyGlotPro:
     def __init__(self, root):
         self.root = root
-        self.root.title('Final Fusion - Advanced Translator')
+        self.root.title('PolyGlot Pro - Advanced Translator')
         self.root.geometry('1200x750+100+50')
         self.root.minsize(1000, 650)
         self.root.configure(bg='#f5f5f5')
@@ -129,7 +129,7 @@ class PolyGlotPro:
         title_frame = tk.Frame(self.header, bg=self.primary_color)
         title_frame.pack(side=tk.LEFT, padx=25, pady=10)
         
-        self.title_label = tk.Label(title_frame, text="Final Fusion Translator", font=self.title_font, 
+        self.title_label = tk.Label(title_frame, text="PolyGlot Pro", font=self.title_font, 
                                   bg=self.primary_color, fg='white')
         self.title_label.pack(anchor='w')
         
@@ -279,7 +279,7 @@ class PolyGlotPro:
         self.status.pack(side=tk.LEFT, padx=25)
         
         # Version info
-        version = tk.Label(self.footer, text="Final Fusion Translator", font=self.subtitle_font, 
+        version = tk.Label(self.footer, text="PolyGlot Pro v1.0", font=self.subtitle_font, 
                          bg=self.light_bg, fg=self.secondary_color)
         version.pack(side=tk.RIGHT, padx=25)
         
